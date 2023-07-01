@@ -1,0 +1,10 @@
+#ifndef FLIGHTS_REAL_TIME_CONTROLLER_H
+#define FLIGHTS_REAL_TIME_CONTROLLER_H
+
+
+class Controller {
+
+};
+
+
+#endif //FLIGHTS_REAL_TIME_CONTROLLER_H

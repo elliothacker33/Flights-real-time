@@ -4,6 +4,14 @@ project(Flights_real_time)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(model)
+include(FetchContent)
+FetchContent_Declare(
+        json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG v3.10.2
+)
+FetchContent_MakeAvailable(json)
+
 
 add_executable(Flights_real_time
         model/Aircraft.h
@@ -11,4 +19,6 @@ add_executable(Flights_real_time
         model/Airport.h
         model/City.h
         model/Country.h
-        main.cpp)
+        main.cpp controller/Controller.cpp controller/Controller.h
+        )
+target_link_libraries(Flights_real_time PRIVATE nlohmann_json::nlohmann_json)
