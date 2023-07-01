@@ -12,5 +12,5 @@ private:
 	string code;
 	string continent;
 	int population;
-}
+};
 

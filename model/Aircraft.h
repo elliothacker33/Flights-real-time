@@ -3,10 +3,10 @@
 using namespace std;
 class Aircraft{
 public:	
-	string hexCode() const;
-	string iataCode() const;
-	string icaoCode() const;
-	string manufacturer() const;
+	string getHexCode() const;
+	string getIataCode() const;
+	string getIcaoCode() const;
+	string getManufacturer() const;
 private:
 	string hexCode;
 	string iataCode;

@@ -1,0 +1,3 @@
+/home/tomas/Documentos/Flights-real-time/cmake-build-debug/CMakeFiles/Flights_real_time.dir
+/home/tomas/Documentos/Flights-real-time/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/tomas/Documentos/Flights-real-time/cmake-build-debug/CMakeFiles/rebuild_cache.dir
