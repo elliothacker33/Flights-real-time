@@ -9,9 +9,40 @@ using json = nlohmann::json;
 Controller::Controller(){
     this->readAirports();
 }
+Controller::~Controller(){
+    for(auto x: airports)
+        delete x.second;
+    for(auto x:airlines)
+        delete x.second;
+    for(auto x:aircrafts){
+        delete x.second;
+    }
+}
 void Controller::readAirports(){
     string url="https://flight-radar1.p.rapidapi.com/airports/list";
     callApi(url,1);
+}
+// Function to process the JSON response
+void Controller::ProcessAirports(string response){
+    // Parse Json Airport Data
+    json responseData = json::parse(response);
+    json rows = responseData["rows"];
+
+    for (const auto& row : rows) {
+        string name=row["name"].get<string>();
+        string iata_code=row["iata"].get<string>();
+        string icao_code=row["icao"].get<string>();
+        double lat=row["lat"].get<double>();
+        double lon=row["lon"].get<double>();
+        string city=row["city"].get<string>();
+        string country=row["country"].get<string>();
+        Airport* airport= new Airport(name,iata_code,icao_code,country,city,lat,lon);
+        airports.insert({name,airport});
+    }
+
+}
+unordered_map<string,Airport*> Controller::get_Airports() const {
+    return airports;
 }
 // Callback Function for response data
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* response)  {
@@ -20,17 +51,6 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* res
     return totalSize;
 }
 
-// Function to process the JSON response
-void Controller::ProcessAirports(string response){
-    // Parse Json Airport Data
-    json responseData = json::parse(response);
-    json rows = responseData["rows"];
-
-    for (const auto& row : rows) {
-        std::cout << row["name"].get<std::string>() << std::endl;
-    }
-
-}
 void Controller::ProcessResponse( string response,int option) {
     switch(option){
         case 1:

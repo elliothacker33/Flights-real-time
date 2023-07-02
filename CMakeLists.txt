@@ -19,7 +19,7 @@ add_executable(Flights_real_time
         model/Airline.h
         model/Airport.h
         main.cpp controller/Controller.cpp controller/Controller.h
-        )
+        model/Airport.cpp)
 
 target_link_libraries(Flights_real_time PRIVATE nlohmann_json::nlohmann_json
          ${CURL_LIBRARIES})
