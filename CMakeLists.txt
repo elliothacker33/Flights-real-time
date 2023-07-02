@@ -11,7 +11,8 @@ FetchContent_Declare(
         GIT_TAG v3.10.2
 )
 FetchContent_MakeAvailable(json)
-
+find_package(CURL REQUIRED)
+include_directories(${CURL_INCLUDE_DIR})
 
 add_executable(Flights_real_time
         model/Aircraft.h
@@ -21,4 +22,6 @@ add_executable(Flights_real_time
         model/Country.h
         main.cpp controller/Controller.cpp controller/Controller.h
         )
-target_link_libraries(Flights_real_time PRIVATE nlohmann_json::nlohmann_json)
+
+target_link_libraries(Flights_real_time PRIVATE nlohmann_json::nlohmann_json
+         ${CURL_LIBRARIES})
