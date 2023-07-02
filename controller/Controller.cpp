@@ -1,47 +1,62 @@
 #include "Controller.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 Controller::Controller(){
-
+    this->readAirports();
+}
+void Controller::readAirports(){
+    string url="https://flight-radar1.p.rapidapi.com/airports/list";
+    json response;
+    callApi(url,1);
 }
 // Callback Function for response data
-size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* response) const {
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* response)  {
     size_t totalSize = size * nmemb;
     response->append(static_cast<char*>(contents), totalSize);
     return totalSize;
 }
 
 // Function to process the JSON response
-void ProcessResponse(const std::string& response) {
-    // Parse the response JSON
+void Controller::ProcessAirports(const string& response){
+    // Parse Json Airport Data
     json responseData = json::parse(response);
 
-    // Retrieve the airlines array from the parsed JSON
-    json rows = responseData["rows"];
-
-    // Iterate over the airlines and print the names
-    for (const auto& row : rows) {
-        std::cout << row["description"].get<std::string>() << std::endl;
+}
+void Controller::ProcessResponse(const string& response,int option) {
+    switch(option){
+        case 1:
+            ProcessAirports(response);
+            break;
+        default:
+            return;
     }
 }
-
-void Controller::callApi() const  {
+void Controller::get_api_key(string& api_key) const{
+    ifstream in("../APIKEY.txt");
+    getline(in,api_key);
+    in.close(); // Close the file
+}
+void Controller::callApi(const string url,int option)  {
+    string api_key;
+    get_api_key(api_key);
     CURL* curl = curl_easy_init();
     if (curl) {
         // Set the URL
-        curl_easy_setopt(curl, CURLOPT_URL, "https://flight-radar1.p.rapidapi.com/aircrafts/list");
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
         // Set the custom request type to GET
         curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "GET");
 
         // Set the headers
         struct curl_slist* headers = NULL;
-        headers = curl_slist_append(headers, "X-RapidAPI-Key: 78fbb0da29msh4839b0fc90f9f48p1b0d36jsn20d175b35c5d");
-        headers = curl_slist_append(headers, "X-RapidAPI-Host: flight-radar1.p.rapidapi.com");
+        string header = "X-RapidAPI-Key: " + api_key;
+        headers = curl_slist_append(headers, header.c_str()); // API KEY HEADER
+        headers = curl_slist_append(headers, "X-RapidAPI-Host: flight-radar1.p.rapidapi.com"); // Host Header
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
         // Response data
@@ -58,8 +73,7 @@ void Controller::callApi() const  {
             std::cerr << "Failed to perform request: " << curl_easy_strerror(res) << std::endl;
         } else {
             // Process the response data
-            std::cout<<"hello";
-            ProcessResponse(response);
+            ProcessResponse(response,option);
         }
 
         // Clean up

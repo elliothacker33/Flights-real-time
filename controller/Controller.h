@@ -7,13 +7,19 @@
 #include "Airline.h"
 #include "Airport.h"
 #include "Aircraft.h"
+#include <nlohmann/json.hpp>
 
 using namespace std;
 
 class Controller {
 public:
     Controller();
-    void callApi() const;
+    void callApi(const string url,int option) ;
+    void get_api_key(string& url) const;
+    void readAirports();
+    void ProcessResponse(const string& response, int option)  ;
+    void ProcessAirports(const string& response);
+
 
 private:
     unordered_map<string,Airline*> airlines;
