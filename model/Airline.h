@@ -4,15 +4,12 @@ using namespace std;
 
 class Airline{
 public:
+    Airline(string name,string icaoCode,string callSign);
 	string getName() const;
-	string getIataCode() const;
 	string getIcaoCode() const;
 	string getCallSign() const;
-	int getProblems() const;
 private:
 	string name;
-	string iataCode;
 	string icaoCode;
 	string callSign;
-	int Problems; // Crashes or Accidents last 5 years
 };

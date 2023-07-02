@@ -2,7 +2,8 @@
 #include<string> 
 using namespace std;
 class Aircraft{
-public:	
+public:
+
 	string getHexCode() const;
 	string getIataCode() const;
 	string getIcaoCode() const;
