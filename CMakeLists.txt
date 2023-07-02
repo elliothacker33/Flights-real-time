@@ -18,8 +18,6 @@ add_executable(Flights_real_time
         model/Aircraft.h
         model/Airline.h
         model/Airport.h
-        model/City.h
-        model/Country.h
         main.cpp controller/Controller.cpp controller/Controller.h
         )
 

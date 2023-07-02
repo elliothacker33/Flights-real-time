@@ -11,7 +11,6 @@ Controller::Controller(){
 }
 void Controller::readAirports(){
     string url="https://flight-radar1.p.rapidapi.com/airports/list";
-    json response;
     callApi(url,1);
 }
 // Callback Function for response data
@@ -22,12 +21,17 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* res
 }
 
 // Function to process the JSON response
-void Controller::ProcessAirports(const string& response){
+void Controller::ProcessAirports(string response){
     // Parse Json Airport Data
     json responseData = json::parse(response);
+    json rows = responseData["rows"];
+
+    for (const auto& row : rows) {
+        std::cout << row["name"].get<std::string>() << std::endl;
+    }
 
 }
-void Controller::ProcessResponse(const string& response,int option) {
+void Controller::ProcessResponse( string response,int option) {
     switch(option){
         case 1:
             ProcessAirports(response);
@@ -55,6 +59,7 @@ void Controller::callApi(const string url,int option)  {
         // Set the headers
         struct curl_slist* headers = NULL;
         string header = "X-RapidAPI-Key: " + api_key;
+        cout<<header;
         headers = curl_slist_append(headers, header.c_str()); // API KEY HEADER
         headers = curl_slist_append(headers, "X-RapidAPI-Host: flight-radar1.p.rapidapi.com"); // Host Header
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);

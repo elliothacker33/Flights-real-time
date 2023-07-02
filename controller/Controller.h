@@ -4,9 +4,10 @@
 #include <cstddef>
 #include <string>
 #include<unordered_map>
-#include "Airline.h"
-#include "Airport.h"
-#include "Aircraft.h"
+#include "../model/Airline.h"
+#include "../model/Airport.h"
+#include "../model/Aircraft.h"
+
 #include <nlohmann/json.hpp>
 
 using namespace std;
@@ -17,8 +18,8 @@ public:
     void callApi(const string url,int option) ;
     void get_api_key(string& url) const;
     void readAirports();
-    void ProcessResponse(const string& response, int option)  ;
-    void ProcessAirports(const string& response);
+    void ProcessResponse( string response, int option)  ;
+    void ProcessAirports(string response);
 
 
 private:
